@@ -1,0 +1,10 @@
+package render
+version = 0.0
+
+authors = "Kiana Sheibani, Eszter"
+license = "MIT"
+
+langversion >= 0.5.1
+
+sourcedir = "src"
+readme = "README.md"
