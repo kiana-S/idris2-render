@@ -16,8 +16,18 @@ record Scene where
 
 
 public export
-PictureType : Scene -> Type
-PictureType sc = Vect sc.camera.pixh (Vect sc.camera.pixw (Vect 3 Bits8))
+render : (cam : Camera) -> Scene -> PictureType cam
+render cam sc =
+  let blank : PictureType cam = replicate _ (replicate _ sc.bgcolor)
+  in  foldl drawObject blank sc.objects
+  where
+    drawPixel : (Integer, Integer, ColorAlpha) -> PictureType cam -> PictureType cam
+    drawPixel (x, y, col) pic = fromMaybe pic $ do
+      x' <- integerToFin x cam.pixw
+      y' <- integerToFin y cam.pixh
+      pure $ updateAt y' (updateAt x' (over col)) pic
 
-
-
+    drawObject : PictureType cam -> Object -> PictureType cam
+    drawObject pic (MkObject obj) =
+      let pixs = draw obj cam
+      in  foldr drawPixel pic pixs

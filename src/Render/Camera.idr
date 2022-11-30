@@ -1,6 +1,6 @@
 module Render.Camera
 
-import Data.Nat
+import Data.Vect
 import Render.Color
 
 %default total
@@ -11,6 +11,12 @@ record Camera where
   center : (Double, Double)
   scenew, sceneh : Double
   pixw, pixh : Nat
+
+
+
+public export
+PictureType : Camera -> Type
+PictureType cam = Vect cam.pixh (Vect cam.pixw Color)
 
 
 export

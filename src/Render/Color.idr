@@ -21,3 +21,10 @@ export
 toAlpha : Color -> ColorAlpha
 toAlpha = withAlpha 1
 
+
+export
+over : ColorAlpha -> Color -> Color
+over [r,g,b,a] [r',g',b'] =
+  [r * a + r' * (1 - a),
+   g * a + g' * (1 - a),
+   b * a + b' * (1 - a)]
