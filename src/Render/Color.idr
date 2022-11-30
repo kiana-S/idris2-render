@@ -7,4 +7,17 @@ import Data.Vect
 
 public export
 Color : Type
-Color = Vect 4 Bits8
+Color = Vect 3 Double
+
+public export
+ColorAlpha : Type
+ColorAlpha = Vect 4 Double
+
+export
+withAlpha : Double -> Color -> ColorAlpha
+withAlpha a [r,g,b] = [r,g,b,a]
+
+export
+toAlpha : Color -> ColorAlpha
+toAlpha = withAlpha 1
+

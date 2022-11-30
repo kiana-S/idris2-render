@@ -9,9 +9,9 @@ import Render.Color
 
 public export
 interface Object' obj where
-  draw : obj -> Camera -> List (Integer, Integer, Color)
+  draw : obj -> Camera -> List (Integer, Integer, ColorAlpha)
 
 
-export
+public export
 data Object : Type where
   MkObject : Object' obj => obj -> Object

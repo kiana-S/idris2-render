@@ -11,10 +11,8 @@ import Render.Object
 public export
 record Scene where
   constructor MkScene
-
-  camera : Camera
   objects : List Object
-  bgcolor : Vect 3 Bits8
+  bgcolor : Color
 
 
 public export

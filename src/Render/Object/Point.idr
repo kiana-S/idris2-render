@@ -14,9 +14,10 @@ public export
 record Point where
   constructor MkPoint
   pos : (Double, Double)
-  color : Color
+  color : ColorAlpha
 
 
+export
 Object' Point where
   draw (MkPoint pos col) cam =
     let (px,py) = pointToPix cam pos
