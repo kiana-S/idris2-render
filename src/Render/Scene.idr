@@ -2,6 +2,7 @@ module Render.Scene
 
 import Data.DPair
 import Data.Vect
+import Data.IORef
 import Data.Buffer
 import System.File
 import Render.Color
@@ -44,10 +45,14 @@ renderToPPM dest cam sc = do
     | Nothing => pure $ Right ()
 
   let pic = render cam sc
-  for_ (zip (tabulate fst) (concat pic)) $ \(i,[r,g,b]) => do
-        setByte buf (cast i * 3)     (cast $ r * 255)
-        setByte buf (cast i * 3 + 1) (cast $ g * 255)
-        setByte buf (cast i * 3 + 2) (cast $ b * 255)
+  ind <- newIORef 0
+  for_ pic $ traverse_ $ \[r,g,b] => do
+        i <- readIORef ind
+        setByte buf (i)     (cast $ r * 255)
+        setByte buf (i + 1) (cast $ g * 255)
+        setByte buf (i + 2) (cast $ b * 255)
+        modifyIORef ind (+3)
+
 
   _ <- if !(exists dest) then removeFile {io} dest else pure $ Right ()
   Right h <- openFile dest Append
