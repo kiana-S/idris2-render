@@ -5,3 +5,9 @@ build/
 *.*~
 
 **/.DS_Store
+
+# Ignore output images
+*.ppm
+*.png
+*.jpg
+*.gif

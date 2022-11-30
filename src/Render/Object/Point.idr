@@ -4,10 +4,9 @@ import Data.Vect
 import Render.Color
 import Render.Camera
 import Render.Picture
-import Render.Object
+import Render.Object.Interface
 
 %default total
-
 
 
 public export
@@ -18,7 +17,7 @@ record Point where
 
 
 export
-Object' Point where
+IsObject Point where
   draw (MkPoint pos col) cam =
     let (px,py) = pointToPix cam pos
     in  [(px,py,col)]

@@ -3,15 +3,11 @@ module Render.Object
 import Data.Vect
 import Render.Camera
 import Render.Color
+import public Render.Object.Interface
+import public Render.Object.Point
 
 %default total
 
-
-public export
-interface Object' obj where
-  draw : obj -> Camera -> List (Integer, Integer, ColorAlpha)
-
-
 public export
 data Object : Type where
-  MkObject : Object' obj => obj -> Object
+  MkObject : IsObject obj => obj -> Object
