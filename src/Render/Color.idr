@@ -13,6 +13,7 @@ public export
 ColorAlpha : Type
 ColorAlpha = Vect 4 Double
 
+
 export
 withAlpha : Double -> Color -> ColorAlpha
 withAlpha a [r,g,b] = [r,g,b,a]

@@ -5,6 +5,7 @@ import Render.Camera
 import Render.Color
 import public Render.Object.Interface
 import public Render.Object.Point
+import public Render.Object.Rectangle
 
 %default total
 

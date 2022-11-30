@@ -3,7 +3,6 @@ module Render.Object.Point
 import Data.Vect
 import Render.Color
 import Render.Camera
-import Render.Picture
 import Render.Object.Interface
 
 %default total
