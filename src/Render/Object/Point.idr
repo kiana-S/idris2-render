@@ -1,6 +1,7 @@
 module Render.Object.Point
 
 import Data.Vect
+import Data.NumIdr
 import Render.Color
 import Render.Camera
 import Render.Object.Interface
@@ -11,12 +12,12 @@ import Render.Object.Interface
 public export
 record Point where
   constructor MkPoint
-  pos : (Double, Double)
+  pos : Point 2 Double
   color : ColorAlpha
 
 
 export
 IsObject Point where
   draw (MkPoint pos col) cam =
-    let (px,py) = pointToPix cam pos
-    in  [(px,py,col)]
+    let p = pointToPix cam pos
+    in  [(p.x,p.y,col)]

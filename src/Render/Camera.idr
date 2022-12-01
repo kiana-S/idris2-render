@@ -1,6 +1,7 @@
 module Render.Camera
 
 import Data.Vect
+import Data.NumIdr
 import Render.Color
 
 %default total
@@ -8,7 +9,8 @@ import Render.Color
 public export
 record Camera where
   constructor MkCamera
-  center : (Double, Double)
+  matrix : Rigid 2 Double
+
   scenew, sceneh : Double
   pixw, pixh : Nat
 
@@ -16,13 +18,11 @@ record Camera where
 
 public export
 PictureType : Camera -> Type
-PictureType cam = Vect cam.pixh (Vect cam.pixw Color)
+PictureType cam = Array [cam.pixh, cam.pixw, 3] Double
 
 
 export
-pointToPix : Camera -> (Double, Double) -> (Integer, Integer)
-pointToPix (MkCamera (cx,cy) sw sh pw ph) (x,y) =
-  let pw' = cast pw
-      ph' = cast ph
-  in (cast ((x - cx) / sw * pw' + pw' / 2),
-      cast ((y - cy) / sh * ph' + ph' / 2))
+pointToPix : Camera -> Point 2 Double -> Point 2 Integer
+pointToPix (MkCamera mat sw sh pw ph) p =
+  let p' = applyInv mat p
+  in  point [cast (p'.x / sw * cast pw), cast (p'.y / sh * cast ph)]

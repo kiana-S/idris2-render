@@ -8,3 +8,12 @@ langversion >= 0.5.1
 
 sourcedir = "src"
 readme = "README.md"
+
+depends = numidr >= 0.2.1
+
+modules = Render.Color,
+          Render.Camera,
+          Render.Object,
+          Render.Scene,
+          Render.Object.Interface,
+          Render.Object.Point

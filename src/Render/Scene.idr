@@ -5,6 +5,7 @@ import Data.Vect
 import Data.IORef
 import Data.Buffer
 import System.File
+import Data.NumIdr
 import Render.Color
 import Render.Camera
 import Render.Object
@@ -21,17 +22,15 @@ record Scene where
 
 export
 render : (cam : Camera) -> Scene -> PictureType cam
-render cam sc =
-  let blank : PictureType cam = replicate _ (replicate _ sc.bgcolor)
-  in  foldl drawObject blank sc.objects
+render cam sc = joinAxes $ foldl drawObject (repeat _ sc.bgcolor) sc.objects
   where
-    drawPixel : (Integer, Integer, ColorAlpha) -> PictureType cam -> PictureType cam
-    drawPixel (x, y, col) pic = fromMaybe pic $ do
-      x' <- integerToFin x cam.pixw
-      y' <- integerToFin y cam.pixh
-      pure $ updateAt y' (updateAt x' (over col)) pic
+    drawPixel : (Integer, Integer, ColorAlpha) -> Array [cam.pixh, cam.pixw] Color -> Array [cam.pixh, cam.pixw] Color
+    drawPixel (x, y, col) arr = fromMaybe arr $ do
+      x' <- integerToFin x _
+      y' <- integerToFin y _
+      pure $ indexUpdate [x',y'] (over col) arr
 
-    drawObject : PictureType cam -> Object -> PictureType cam
+    drawObject : Array [cam.pixh, cam.pixw] Color -> Object -> Array [cam.pixh, cam.pixw] Color
     drawObject pic (MkObject obj) =
       let pixs = draw obj cam
       in  foldr drawPixel pic pixs
@@ -46,12 +45,10 @@ renderToPPM dest cam sc = do
 
   let pic = render cam sc
   ind <- newIORef 0
-  for_ pic $ traverse_ $ \[r,g,b] => do
+  for_ pic $ \x => do
         i <- readIORef ind
-        setByte buf (i)     (cast $ r * 255)
-        setByte buf (i + 1) (cast $ g * 255)
-        setByte buf (i + 2) (cast $ b * 255)
-        modifyIORef ind (+3)
+        setByte buf i (cast $ x * 255)
+        modifyIORef ind (+1)
 
 
   _ <- if !(exists dest) then removeFile {io} dest else pure $ Right ()
